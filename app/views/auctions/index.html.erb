@@ -1,0 +1,76 @@
+<div class="container">
+	<div class="row d-flex justify-content-center">
+		<h1><%= @fetching %>:</h1>
+	</div>
+	<div class="row d-flex justify-content-center" style="margin:2vh;font-size: 80px;">
+		<b><%= "#{@player.name}, #{@player.team}" if @player %></b>
+	</div>
+    <% if @player %>
+
+	    <%= form_tag('/auctions/assign', {class: "form-group"}) do %>
+    	<div class="row" style="margin-top:3vh;">
+	    	<%= hidden_field_tag :player_id, @player.id %>
+    		<div class="col-sm-6">
+	    		<%= select_tag :user_id, options_from_collection_for_select(User.all, :id, :name), { class: "form-control" } %>
+    		</div>
+    		<div class="col-sm-6"><%= number_field_tag :cost, nil, class: "form-control" %></div>
+    	</div>
+    	<div class="row" style="margin-top:3vh;">
+    		<div class="col-sm-2 offset-md-2">
+		  		<%= submit_tag 'Assegna', class: "btn btn-success" %>
+    		</div>
+		<% end %>
+    		<div class="col-sm-2 offset-md-4">
+	    		<%= button_to auctions_path,  method: :get, params: { rand: true }, class: "btn btn-danger" do %>
+					Salta
+		    	<% end %>
+    		</div>
+    	</div>
+
+	<% end %>
+	<br>
+	<br>
+</div>
+<div>
+	<div class="list-group">
+		<% @users.each do |u| %>
+			<div class="list-group-item list-group-item-action">
+				<div class="row">
+					<div class="col-sm-4 align-middle">
+						<div class="row d-flex justify-content-center">
+							<strong><%= u.name %></strong>
+						</div>
+						<div class="row d-flex justify-content-center">
+							<h1><%= u.credits %></h1>
+						</div>
+					</div>
+					<div class="col-sm-2">
+						<p><b>Portieri</b></p>
+						<% Player.where(user_id: u.id, role: "P").each do |p| %>
+							<p><%= "#{p.name}, #{p.team}, #{p.cost}" %></p>
+						<% end %>
+					</div>
+					<div class="col-sm-2">
+						<p><b>Difensori</b></p>
+						<% Player.where(user_id: u.id, role: "D").each do |p| %>
+							<p><%= "#{p.name}, #{p.team}, #{p.cost}" %></p>
+						<% end %>
+					</div>
+					<div class="col-sm-2">
+						<p><b>Centrocampisti</b></p>
+						<% Player.where(user_id: u.id, role: "C").each do |p| %>
+							<p><%= "#{p.name}, #{p.team}, #{p.cost}" %></p>
+						<% end %>
+					</div>
+					<div class="col-sm-2">
+						<p><b>Attaccanti</b></p>
+						<% Player.where(user_id: u.id, role: "A").each do |p| %>
+							<p><%= "#{p.name}, #{p.team}, #{p.cost}" %></p>
+						<% end %>
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>	
+</div>
+
