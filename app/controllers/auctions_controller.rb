@@ -20,7 +20,7 @@ class AuctionsController < ApplicationController
 			end
 		end
 		if params[:rand]
-			min_sampled = Player.minimum(:sampled)
+			min_sampled = Player.where(role: role).minimum(:sampled)
 			available_players = Player.where(user_id: nil, role: role, sampled: min_sampled)
 			idx = rand(available_players.count)
 			@player = available_players[idx]
