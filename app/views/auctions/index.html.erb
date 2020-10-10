@@ -5,29 +5,34 @@
 	<div class="row d-flex justify-content-center" style="margin:2vh;font-size: 80px;">
 		<b><%= "#{@player.name}, #{@player.team}" if @player %></b>
 	</div>
+    <% if @player %>
 
-	<div class="row" style="margin-top:3vh;">
-	    <% if @player %>
-		    <%= form_tag('/auctions/assign', {class: "form-group"}) do %>
-		    	<%= hidden_field_tag :player_id, @player.id %>
-	    		<div class="col-sm-6">
-		    		<%= select_tag :user_id, options_from_collection_for_select(User.all, :id, :name), { class: "form-control" } %>
-	    		</div>
-	    		<div class="col-sm-6"><%= number_field_tag :cost, nil, class: "form-control" %></div>
-	    	</div>
-	    	<div class="row" style="margin-top:3vh;">
-	    		<div class="col-sm-2 offset-md-2">
-			  		<%= submit_tag 'Assegna', class: "btn btn-success" %>
-	    		</div>
-			<% end %>
+	    <%= form_tag('/auctions/assign', {class: "form-group"}) do %>
+    	<div class="row" style="margin-top:3vh;">
+	    	<%= hidden_field_tag :player_id, @player.id %>
+    		<div class="col-sm-6">
+	    		<%= select_tag :user_id, options_from_collection_for_select(User.all, :id, :name), { class: "form-control" } %>
+    		</div>
+    		<div class="col-sm-6"><%= number_field_tag :cost, nil, class: "form-control" %></div>
+    	</div>
+    	<div class="row" style="margin-top:3vh;">
+    		<div class="col-sm-2 offset-md-2">
+		  		<%= submit_tag 'Assegna', class: "btn btn-success" %>
+    		</div>
 		<% end %>
-		<div class="col-sm-2 offset-md-4">
+    		<div class="col-sm-2 offset-md-4">
+	    		<%= button_to auctions_path,  method: :get, params: { rand: true }, class: "btn btn-danger" do %>
+					Salta
+		    	<% end %>
+    		</div>
+    	</div>
+    <% else %>
+    	<div class="row d-flex justify-content-center">
     		<%= button_to auctions_path,  method: :get, params: { rand: true }, class: "btn btn-danger" do %>
 				Salta
 	    	<% end %>
 		</div>
-	</div>
-
+	<% end %>
 	<br>
 	<br>
 </div>
